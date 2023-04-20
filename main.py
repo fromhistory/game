@@ -38,9 +38,19 @@ def put_letter(letter, word, display):
             display[index] = letter
     return display
 
-letter = "e"
 
-put_letter(letter, word, display)
+# The GAME logic
 
-print(display)
+game_on = True
+
+while game_on: 
+
+    guess = make_guess()
+
+    new_display = put_letter(guess, word, display)
+
+    print(new_display)
+
+    if " " not in new_display:
+        game_on = False
 
