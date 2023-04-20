@@ -27,10 +27,27 @@ new_display = []
 
 while game_on: 
 
-    # Would you like to guess the whole word or a letter? 
+
+    def word_or_letter():
+        while True:
+            print()
+            decision = input("Would you like to guess the whole word or a letter? " 
+                "Type W for word or L for letter.\n" 
+                "Guessing the whole word will bring you a better score.\n")
+            if decision !='W' or decision != "L":
+                print()
+                print("You need to select either W or L.")
+                continue
+            break
+        return decision
+
+
+
+
+    word_or_letter()
+
          
     guess = make_guess(new_display)
-    # Create logic for the case when you are making a mistake 
     new_display = put_letter(guess, answer, display)
 
     if guess not in answer: 
