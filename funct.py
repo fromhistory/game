@@ -10,10 +10,12 @@ def get_question():
 
         answer = unquote(data['results'][0]['correct_answer'].lower())
         question = unquote(data['results'][0]['question'])
-        if ' ' not in answer and answer.isalpha:
+        if ' ' not in answer and not any(char.isnumeric() for char in answer):
             print(question)
             print(answer)
             return answer
+
+
 
 
 def generate_list_from_string(string):

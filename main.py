@@ -16,6 +16,8 @@ answer = get_question()
 
 # Get to generate the display based on the length of a random word that I found using an API call
 display = generate_list_from_string(answer)
+print(f"The answer has {len(display)} letters.")
+print(display)
 
 game_on = True
 errors = 0
@@ -34,6 +36,8 @@ while game_on:
     if guess not in answer: 
         print("You have made an error.")
         errors += 1
+    else:
+        print("You got it!")
 
     print_board(new_display)
 
