@@ -1,7 +1,8 @@
 # A Hangman game
 
 
-# Make this game for two players, so it connects to the database and pulls the score for the player (history)
+# Make this game for two players, so it connects to the database and pulls the score for the player (history). 
+# Database should have the name of the player etc
 
 
 # STORE DATA IN THE FILE, SO IT COULD BE GOOD FOR THE NEXT USE
@@ -20,10 +21,14 @@ def correct_letter(guess, word):
 
 
 # Function asking for a guess
-def make_guess():
+def make_guess(dashboard):
     while True:
         guess = input("Please guess a letter: \n")
         if not guess.isalpha():
+            print("This is not a valid letter.")
+            continue
+        if guess in dashboard:
+            print("This letter has already been guessed")
             continue
         break
     return guess
@@ -39,19 +44,49 @@ def put_letter(letter, word, display):
     return display
 
 
+def print_board(board):
+    print("\n")
+    print(board)
+    print("\n")
+
+
 # The GAME logic
 
 game_on = True
+errors = 0
+
+# I can have different levels based on the number of errors that I have
+
+max_errors = 5
+new_display = []
 
 while game_on: 
 
-    guess = make_guess()
+    # Would you like to guess the whole word or a letter? 
 
+
+
+
+    
+     
+    guess = make_guess(new_display)
+    # Create logic for the case when you are making a mistake 
     new_display = put_letter(guess, word, display)
 
-    print(new_display)
+    if guess not in word: 
+        print("You have made an error.")
+        errors += 1
+
+    print_board(new_display)
+
+    if errors == max_errors:
+        print("Game over! You reached the maximum number of errors!")
+        game_on = False
 
     if " " not in new_display:
+        print("You won! Great game!")
         game_on = False
-        
+
+
+
 
