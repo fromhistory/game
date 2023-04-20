@@ -1,38 +1,23 @@
-import funct.py
-
-
+from funct import *
 
 # A Hangman game
-
-
 # Make this game for two players, so it connects to the database and pulls the score for the player (history). 
 # Database should have the name of the player etc
-
-
 # STORE DATA IN THE FILE, SO IT COULD BE GOOD FOR THE NEXT USE
 # WHEEL OF FORTUNE: SENDS AN API CALL
 # KEEP THE LEADERSBOARD
 # LOOK UP DATA USING AN API CALL
-
 # guess a word when you can only be wrong seven times. If you are not wrong you can keep playing
+# I can have different levels based on the number of errors that I have
+
 
 word = "freedom"
-
-# function to check if the guessed letter is in the word
-
-
 
 # Get to generate the display based on the length of a random word that I found using an API call
 display = [" ",  " ", " ", " ", " ", " ", " "]
 
-
-
-# The GAME logic
-
 game_on = True
 errors = 0
-
-# I can have different levels based on the number of errors that I have
 
 max_errors = 5
 new_display = []
@@ -40,9 +25,7 @@ new_display = []
 while game_on: 
 
     # Would you like to guess the whole word or a letter? 
-
-    
-     
+         
     guess = make_guess(new_display)
     # Create logic for the case when you are making a mistake 
     new_display = put_letter(guess, word, display)
