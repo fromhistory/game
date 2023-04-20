@@ -1,6 +1,38 @@
+import requests
+from urllib.parse import unquote
+from html import unescape
+
+def get_question():
+    while True:
+        response = requests.get("https://opentdb.com/api.php?amount=10&type=multiple&encode=url3986")
+        response.raise_for_status()
+        data = response.json()
+
+        answer = unquote(data['results'][0]['correct_answer'].lower())
+        question = unquote(data['results'][0]['question'])
+        if ' ' not in answer and answer.isalpha:
+            print(question)
+            print(answer)
+            return answer
+
+
+def generate_list_from_string(string):
+    # Create an empty list to store the generated list
+    generated_list = []
+
+    # Iterate through each character in the string
+    for char in string:
+        # Append the character to the list
+        generated_list.append(' ')
+
+    # Return the generated list
+    return generated_list
+
+
+# Keep resending the request until the answer is one word
+
 def correct_letter(guess, word):
     return guess in word
-
 
 # Function asking for a guess
 def make_guess(dashboard):

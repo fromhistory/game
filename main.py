@@ -11,10 +11,11 @@ from funct import *
 # I can have different levels based on the number of errors that I have
 
 
-word = "freedom"
+
+answer = get_question()
 
 # Get to generate the display based on the length of a random word that I found using an API call
-display = [" ",  " ", " ", " ", " ", " ", " "]
+display = generate_list_from_string(answer)
 
 game_on = True
 errors = 0
@@ -28,9 +29,9 @@ while game_on:
          
     guess = make_guess(new_display)
     # Create logic for the case when you are making a mistake 
-    new_display = put_letter(guess, word, display)
+    new_display = put_letter(guess, answer, display)
 
-    if guess not in word: 
+    if guess not in answer: 
         print("You have made an error.")
         errors += 1
 
