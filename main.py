@@ -53,4 +53,5 @@ while game_on:
 
     if " " not in new_display:
         game_on = False
+        
 
