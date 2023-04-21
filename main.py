@@ -1,4 +1,5 @@
 from funct import *
+import sqlite3
 
 # A Hangman game
 # Make this game for two players, so it connects to the database and pulls the score for the player (history). 
@@ -7,11 +8,15 @@ from funct import *
 
 # KEEP THE LEADERSBOARD
 
-
 # guess a word when you can only be wrong seven times. If you are not wrong you can keep playing
 # I can have different levels based on the number of errors that I have
 
+def greeting():
+    name = input("Hello. Welcome to the game! What is your name?\n")
+    return name
 
+
+name = greeting()
 
 answer = get_question()
 
@@ -38,7 +43,7 @@ while game_on:
         answer_try = input("Please type the word: ").lower()
         number_of_tries += 1
         if answer_try == answer:
-            print("Congratulations! You won the game!")
+            print(f"Congratulations! You won the game, {name}!")
             super_score = 100
             game_on = False
         continue
@@ -61,7 +66,7 @@ while game_on:
             game_on = False
 
         if " " not in new_display:
-            print("You won! Great game!")
+            print(f"You won! Great game, {name}")
             game_on = False
 
 
@@ -69,5 +74,16 @@ final_score =total_score(score=score, super_score=super_score, number_of_tries=n
 print(final_score)
 
 
+# Connect to the SQLite database
+conn = sqlite3.connect('game.db')
+cursor = conn.cursor()
+
+
+# Execute the INSERT INTO statement
+cursor.execute("INSERT INTO scores (name, score) VALUES (?, ?)", (name, final_score))
+
+# Commit the changes and close the connection
+conn.commit()
+conn.close()
 
 
