@@ -15,7 +15,19 @@ def get_question():
             print(answer)
             return answer
 
-
+def word_or_letter():
+    while True:
+        print()
+        decision = input("Would you like to guess the whole word or a letter? " 
+            "Type W for word or L for letter.\n" 
+            "Guessing the whole word will bring you a better score.\n").capitalize()
+        
+        if decision != "W" and decision != "L":
+            print()
+            print("You need to select either W or L.")
+            continue
+        break
+    return decision
 
 
 def generate_list_from_string(string):
@@ -39,7 +51,7 @@ def correct_letter(guess, word):
 # Function asking for a guess
 def make_guess(dashboard):
     while True:
-        guess = input("Please guess a letter: \n")
+        guess = input("Please guess a letter: \n").lower()
         if not guess.isalpha():
             print("This is not a valid letter.")
             continue
@@ -62,3 +74,9 @@ def print_board(board):
     print("\n")
     print(board)
     print("\n")
+
+
+def total_score(score=0,super_score=0,number_of_tries=0):
+    number_of_tries *=10
+    score *=5
+    return score + (super_score - number_of_tries)

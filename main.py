@@ -4,9 +4,10 @@ from funct import *
 # Make this game for two players, so it connects to the database and pulls the score for the player (history). 
 # Database should have the name of the player etc
 # STORE DATA IN THE FILE, SO IT COULD BE GOOD FOR THE NEXT USE
-# WHEEL OF FORTUNE: SENDS AN API CALL
+
 # KEEP THE LEADERSBOARD
-# LOOK UP DATA USING AN API CALL
+
+
 # guess a word when you can only be wrong seven times. If you are not wrong you can keep playing
 # I can have different levels based on the number of errors that I have
 
@@ -24,47 +25,48 @@ errors = 0
 
 max_errors = 5
 new_display = []
+number_of_tries = -1
+score = 0
+super_score = 0
 
 while game_on: 
 
+    decision = word_or_letter()
 
-    def word_or_letter():
-        while True:
-            print()
-            decision = input("Would you like to guess the whole word or a letter? " 
-                "Type W for word or L for letter.\n" 
-                "Guessing the whole word will bring you a better score.\n")
-            if decision !='W' or decision != "L":
-                print()
-                print("You need to select either W or L.")
-                continue
-            break
-        return decision
+    if decision == "W":
 
-
-
-
-    word_or_letter()
-
-         
-    guess = make_guess(new_display)
-    new_display = put_letter(guess, answer, display)
-
-    if guess not in answer: 
-        print("You have made an error.")
-        errors += 1
+        answer_try = input("Please type the word: ").lower()
+        number_of_tries += 1
+        if answer_try == answer:
+            print("Congratulations! You won the game!")
+            super_score = 100
+            game_on = False
+        continue
+        
     else:
-        print("You got it!")
+        guess = make_guess(new_display)
+        new_display = put_letter(guess, answer, display)
 
-    print_board(new_display)
+        if guess not in answer: 
+            print("You have made an error.")
+            errors += 1
+        else:
+            score += 1
+            print("You got it!")
 
-    if errors == max_errors:
-        print("Game over! You reached the maximum number of errors!")
-        game_on = False
+        print_board(new_display)
 
-    if " " not in new_display:
-        print("You won! Great game!")
-        game_on = False
+        if errors == max_errors:
+            print("Game over! You reached the maximum number of errors!")
+            game_on = False
+
+        if " " not in new_display:
+            print("You won! Great game!")
+            game_on = False
+
+
+final_score =total_score(score=score, super_score=super_score, number_of_tries=number_of_tries)
+print(final_score)
 
 
 
