@@ -2,6 +2,21 @@ import requests
 from urllib.parse import unquote
 from html import unescape
 
+
+def greeting():
+    print("Hello. Welcome to the game! Are you a returning player? ")
+    while True:
+        user_identity = input("Reply Y for Yes and N for No.\n").lower()
+        if user_identity not in ["y", "n"]:
+            continue
+        break
+    return user_identity
+
+
+def name():
+    name = input("Please provide your name: ").capitalize()
+    return name
+
 def get_question():
     while True:
         response = requests.get("https://opentdb.com/api.php?amount=10&type=multiple&encode=url3986")

@@ -10,13 +10,12 @@ import sqlite3
 
 # guess a word when you can only be wrong seven times. If you are not wrong you can keep playing
 # I can have different levels based on the number of errors that I have
+ 
+user_identity = greeting()
+name = name()
 
-def greeting():
-    name = input("Hello. Welcome to the game! What is your name?\n")
-    return name
-
-
-name = greeting()
+#if it is a returning user update his score 
+# if it is a new user create a new row
 
 answer = get_question()
 
@@ -27,12 +26,13 @@ print(display)
 
 game_on = True
 errors = 0
-
 max_errors = 5
 new_display = []
 number_of_tries = -1
 score = 0
 super_score = 0
+
+
 
 while game_on: 
 
@@ -79,8 +79,22 @@ conn = sqlite3.connect('game.db')
 cursor = conn.cursor()
 
 
-# Execute the INSERT INTO statement
-cursor.execute("INSERT INTO scores (name, score) VALUES (?, ?)", (name, final_score))
+# Execute the INSERT INTO statement if it is a returning user 
+if user_identity == 'n':
+    cursor.execute("INSERT INTO scores (name, score) VALUES (?, ?)", (name, final_score))
+elif user_identity == 'y':
+
+    # function that pulls the data from the database and adds the current score to the data and updates the database
+    cursor.execute("SELECT score FROM scores WHERE name = ?", (name,))
+
+    row = cursor.fetchone()
+    if row is not None:
+        old_score = row[0]
+
+    final_score += old_score
+
+    cursor.execute("UPDATE scores SET score = ? WHERE name = ?", (final_score, name))
+
 
 # Commit the changes and close the connection
 conn.commit()
