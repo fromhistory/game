@@ -1,8 +1,9 @@
 from funct import *
 import sqlite3
 
-# A Hangman game
-# Make this game for two players, so it connects to the database and pulls the score for the player (history). 
+
+
+# create rest api to pull the data from the sqlite service 
 # Database should have the name of the player etc
 # STORE DATA IN THE FILE, SO IT COULD BE GOOD FOR THE NEXT USE
 
@@ -98,6 +99,37 @@ elif user_identity == 'y':
 
 # Commit the changes and close the connection
 conn.commit()
+
+def current_leader():
+    while True:
+        opinion = input("Would you like to see who is the current leader? For Yes type Y, for No type N. ").lower()
+        if opinion not in ['y', 'n']:
+            continue 
+        break
+    return current_leader
+
+current_leader = current_leader()
+print(current_leader)
+
+if current_leader == 'y':
+    # Execute the query to select name with the highest score
+    cursor.execute('SELECT name, MAX(score) as max_score FROM scores;')
+    result = cursor.fetchone()  # Fetch the first row of the result
+    print(result)
+
+    # if result:
+    #     name = result[0]  # Get the name from the first column
+    #     max_score = result[1]  # Get the max_score from the second column
+    #     print(f"Name with the highest score: {name}")
+    #     print(f"Highest score: {max_score}")
+    # else:
+    #     print("No data found")
+    
+else:
+    print("Okay then. We recorded you current result. Thanks for playing!")
+
+
+
 conn.close()
 
 
