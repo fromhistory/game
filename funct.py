@@ -95,3 +95,13 @@ def total_score(score=0,super_score=0,number_of_tries=0):
     number_of_tries *=10
     score *=5
     return score + (super_score - number_of_tries)
+
+
+
+def current_leader():
+    while True:
+        opinion = input("Would you like to see who is the current leader? For Yes type Y, for No type N. ").lower()
+        if opinion not in ['y', 'n']:
+            continue 
+        break
+    return opinion
