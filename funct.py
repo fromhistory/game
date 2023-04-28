@@ -18,12 +18,28 @@ def greeting():
     return user_identity
 
 
-def name():
-    name = input("Please provide your first name: ").capitalize()
-    return name
+# def name(cursor):
+#     name = input("Please provide your first name: ").capitalize()
+#     result = check_name_in_database(cursor, name)
+#     if result is None:
+#         name = input("Please provide your first name again. The name previously provided does not exist in the database: ").capitalize()
+#     return name
 
-def check_name_in_db(name):
-    pass
+
+# def check_name_in_database(cursor, name):
+#     # Execute the query to check if the name exists in the database
+#     cursor.execute('SELECT COUNT(*) FROM scores WHERE name = ?', (name,))
+#     result = cursor.fetchone()  # Fetch the first row of the result
+#     if not result or not result[0] > 0:
+#         print(f"{name} does not exist in the database")
+#         return
+#     return 1
+
+
+
+    # if name in the database then let it be 
+    # else if name is not in the database, then say it is not in the database 
+    
 
 
 
@@ -119,6 +135,21 @@ def current_leader():
 
 
 #### DATABASE QUERIES 
+
+def get_valid_name(cursor):
+    
+    # Keep asking for a name until a valid one is provided
+    while True:
+        name = input("Please provide your first name: ").capitalize()
+        cursor.execute("SELECT name FROM scores WHERE name = ?", (name,))
+        result = cursor.fetchone()
+        if result:
+            # The name exists in the database, so return it
+            return name
+        else:
+            # The name doesn't exist in the database, so ask again
+            print("That name is not in the database. Please try again.")
+
 
 def highest_score_leader(cursor):
     

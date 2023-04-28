@@ -2,13 +2,16 @@ from funct import *
 import sqlite3
 from art import *
 
+# Connect to the SQLite database
+conn = sqlite3.connect('game.db')
+cursor = conn.cursor()
 
 # I can have different levels based on the number of errors that I have
  
 print(lst_fonts[0])
 
 user_identity = greeting()
-first_name = name()
+first_name = get_valid_name(cursor)
 
 
 #if it is a returning user update his score 
@@ -35,10 +38,9 @@ while True:
         print("Game over! You reached the maximum number of errors!")
         print(lst_fonts[2])
         break
-        
 
     if " " not in new_display and len(new_display) > 0:
-        print(f"You won! Great game, {name}")
+        print(f"You won! Great game, {first_name}")
         print(lst_fonts[1])
         break
 
@@ -49,7 +51,7 @@ while True:
         answer_try = input("Please type the word: ").lower()
         number_of_tries += 1
         if answer_try == answer:
-            print(f"Congratulations! You won the game, {name}!")
+            print(f"Congratulations! You won the game, {first_name}!")
             print(lst_fonts[1])
             if number_of_tries == 1:
                 super_score = 110
@@ -75,14 +77,8 @@ while True:
         print_board(new_display)
 
 
-
 final_score =total_score(score=score, super_score=super_score, number_of_tries=number_of_tries)
 print(f"Your score in this game is: {final_score}")
-
-
-# Connect to the SQLite database
-conn = sqlite3.connect('game.db')
-cursor = conn.cursor()
 
 update_database(cursor, user_identity, first_name, final_score)
 
@@ -93,10 +89,8 @@ leader = current_leader()
 
 if leader == 'y':
     highest_score_leader(cursor)
-    
 else:
     print("Okay then. We recorded you current result. Thanks for playing!")
-
 
 conn.close()
 
