@@ -6,27 +6,7 @@ from art import *
 conn = sqlite3.connect('game.db')
 cursor = conn.cursor()
 
-# I can have different levels based on the number of errors that I have
- 
-print(lst_fonts[0])
-
-box(text)
-
-user_identity = greeting()
-first_name = get_valid_name(cursor)
-
-
-#if it is a returning user update his score 
-# if it is a new user create a new row
-
-answer = get_question()
-
-# Get to generate the display based on the length of a random word that I found using an API call
-display = generate_list_from_string(answer)
-print(f"The answer has {len(display)} letters.")
-print(display)
-
-
+# Define variables
 errors = 0
 max_errors = 5
 new_display = []
@@ -35,17 +15,48 @@ score = 0
 super_score = 0
 silent_count = 0
 
+
+# Display the greeting 
+print(lst_fonts[0])
+
+# Display the rules of the game
+box(text)
+
+# Ask if it is a new or returning user
+user_identity = greeting()
+
+# Verify the claim that it is a returning user. If not a returning user, get the name.
+if user_identity == 'y':
+    first_name = get_valid_name(cursor)
+elif user_identity == 'n':
+    first_name = get_name()
+
+
+# Get a random question from the online trivia database 
+answer = get_question()
+
+# Generate a display based on the length of an answer 
+display = generate_list_from_string(answer)
+print(f"The answer has {len(display)} letters.")
+print(display)
+
+# Game cycle
+
 while True: 
 
     if errors == max_errors:
         print("Game over! You reached the maximum number of errors!")
+        #print Acsii art saying game over
         print(lst_fonts[2])
         break
 
     if " " not in new_display and len(new_display) > 0:
         print(f"You won! Great game, {first_name}")
+        #print Ascii art congratulating the winner
         print(lst_fonts[1])
         break
+
+    # Ask user if they want to guess a word or a letter
 
     decision = word_or_letter()
 
@@ -80,15 +91,21 @@ while True:
 
         print_board(new_display)
 
+# Calculate the final score
 
 final_score =total_score(score=score, super_score=super_score, number_of_tries=number_of_tries, silent_count=silent_count)
 print(f"Your score in this game is: {final_score}")
 
+
+# Update the database. If it is a new user, create a new row with data.
+# If it is a returning user, update the score
 update_database(cursor, user_identity, first_name, final_score)
 
 # Commit the changes and close the connection
 conn.commit()
 
+
+# Find who has the highest the score in the database
 leader = current_leader()
 
 if leader == 'y':

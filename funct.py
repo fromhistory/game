@@ -33,8 +33,6 @@ def box(text):
     print("+" + "-" * (box_width-2) + "+")
 
     
-
-
 def greeting():
     print("Hello. Welcome to the game! Are you a returning player? ")
     while True:
@@ -74,19 +72,10 @@ def word_or_letter():
 
 
 def generate_list_from_string(string):
-    # Create an empty list to store the generated list
     generated_list = []
-
-    # Iterate through each character in the string
     for char in string:
-        # Append the character to the list
         generated_list.append(' ')
-
-    # Return the generated list
     return generated_list
-
-
-# Keep resending the request until the answer is one word
 
 def correct_letter(guess, word):
     return guess in word
@@ -156,6 +145,9 @@ def get_valid_name(cursor):
             # The name doesn't exist in the database, so ask again
             print("That name is not in the database. Please try again.")
 
+def get_name():
+     name = input("Please provide your first name: ").capitalize()
+     return name
 
 def highest_score_leader(cursor):
     
