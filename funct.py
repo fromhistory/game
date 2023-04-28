@@ -3,9 +3,36 @@ from urllib.parse import unquote
 from html import unescape
 import sqlite3
 
-# Connect to the SQLite database
-conn = sqlite3.connect('game.db')
-cursor = conn.cursor()
+
+text = "These are the rules of the game:\n" \
+       "1. If you choose to guess a word you gain 100 points\n" \
+       "2. If you choose to guess a letter you gain 5 points\n" \
+       "3. If you tried to guess a word but made a mistake you loose one try and ten points\n" \
+       "4. You have a total of 5 tries\n" \
+       "5. If choose to guess letters but then decide to guess the whole word\n" \
+       "the number of times you guessed letters * 10 will be deducted from your final score\n" \
+       "Good luck!"
+
+
+def box(text):
+
+    box_width = len(text) +4
+    box_height = 5
+
+    # Draw the top of the box
+    print("+" + "-" * (box_width-2) + "+")
+
+    # Draw the sides of the box with text
+    for i in range(box_height-2):
+        if i == (box_height-2) // 2:
+            print("| " + text.center(box_width-4) + " |")
+        else:
+            print("|" + " " * (box_width-2) + "|")
+
+    # Draw the bottom of the box
+    print("+" + "-" * (box_width-2) + "+")
+
+    
 
 
 def greeting():
@@ -16,31 +43,6 @@ def greeting():
             continue
         break
     return user_identity
-
-
-# def name(cursor):
-#     name = input("Please provide your first name: ").capitalize()
-#     result = check_name_in_database(cursor, name)
-#     if result is None:
-#         name = input("Please provide your first name again. The name previously provided does not exist in the database: ").capitalize()
-#     return name
-
-
-# def check_name_in_database(cursor, name):
-#     # Execute the query to check if the name exists in the database
-#     cursor.execute('SELECT COUNT(*) FROM scores WHERE name = ?', (name,))
-#     result = cursor.fetchone()  # Fetch the first row of the result
-#     if not result or not result[0] > 0:
-#         print(f"{name} does not exist in the database")
-#         return
-#     return 1
-
-
-
-    # if name in the database then let it be 
-    # else if name is not in the database, then say it is not in the database 
-    
-
 
 
 def get_question():
@@ -117,10 +119,14 @@ def print_board(board):
     print("\n")
 
 
-def total_score(score=0,super_score=0,number_of_tries=0):
+def total_score(score,super_score,number_of_tries, silent_count):
     number_of_tries *=10
     score *=5
-    return score + (super_score - number_of_tries)
+    if super_score > 0:
+        silent_count *=10
+    else:
+        silent_count = 0
+    return score + (super_score - number_of_tries - silent_count)
 
 
 

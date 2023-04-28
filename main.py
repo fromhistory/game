@@ -10,6 +10,8 @@ cursor = conn.cursor()
  
 print(lst_fonts[0])
 
+box(text)
+
 user_identity = greeting()
 first_name = get_valid_name(cursor)
 
@@ -31,6 +33,7 @@ new_display = []
 number_of_tries = 0
 score = 0
 super_score = 0
+silent_count = 0
 
 while True: 
 
@@ -72,12 +75,13 @@ while True:
             errors += 1
         else:
             score += 1
+            silent_count += 1
             print("You got it!")
 
         print_board(new_display)
 
 
-final_score =total_score(score=score, super_score=super_score, number_of_tries=number_of_tries)
+final_score =total_score(score=score, super_score=super_score, number_of_tries=number_of_tries, silent_count=silent_count)
 print(f"Your score in this game is: {final_score}")
 
 update_database(cursor, user_identity, first_name, final_score)
