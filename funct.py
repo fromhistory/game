@@ -1,6 +1,11 @@
 import requests
 from urllib.parse import unquote
 from html import unescape
+import sqlite3
+
+# Connect to the SQLite database
+conn = sqlite3.connect('game.db')
+cursor = conn.cursor()
 
 
 def greeting():
@@ -14,8 +19,13 @@ def greeting():
 
 
 def name():
-    name = input("Please provide your name: ").capitalize()
+    name = input("Please provide your first name: ").capitalize()
     return name
+
+def check_name_in_db(name):
+    pass
+
+
 
 def get_question():
     while True:
@@ -105,3 +115,39 @@ def current_leader():
             continue 
         break
     return opinion
+
+
+
+#### DATABASE QUERIES 
+
+def highest_score_leader(cursor):
+    
+     # Execute the query to select name with the highest score
+    cursor.execute('SELECT name, MAX(score) as max_score FROM scores;')
+    result = cursor.fetchone()  # Fetch the first row of the result
+    if result:
+        name = result[0]  # Get the name from the first column
+        max_score = result[1]  # Get the max_score from the second column
+        print(f"Name with the highest score: {name}")
+        print(f"Highest score: {max_score}")
+    else:
+        print("No data found")
+
+
+
+def update_database(cursor,user_identity, name, final_score):
+        # Execute the INSERT INTO statement if it is a returning user 
+    if user_identity == 'n':
+        cursor.execute("INSERT INTO scores (name, score) VALUES (?, ?)", (name, final_score))
+    elif user_identity == 'y':
+
+        # function that pulls the data from the database and adds the current score to the data and updates the database
+        cursor.execute("SELECT score FROM scores WHERE name = ?", (name,))
+
+        row = cursor.fetchone()
+        if row is not None:
+            old_score = row[0]
+
+        final_score += old_score
+
+        cursor.execute("UPDATE scores SET score = ? WHERE name = ?", (final_score, name))
